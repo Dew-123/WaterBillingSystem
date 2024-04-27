@@ -80,7 +80,7 @@ public class Login extends JFrame implements ActionListener {
                     if (resultSet.next()) {
                         // Login successful
                         JOptionPane.showMessageDialog(this, "Login Successful!");
-                        new Project().setVisible(true);
+                        new NewCustomer().setVisible(true);
                         this.setVisible(false);
 
                     } else {
