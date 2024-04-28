@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.sql.*;
 
 public class NewCustomer extends JFrame implements ActionListener {
-    JTextField t1, t2, t3, t4, t5, t6, t7;
+    JTextField t1, t2, t3, t4, t5, t6;
     JButton b1, b2;
 
     NewCustomer() {
@@ -53,7 +53,7 @@ public class NewCustomer extends JFrame implements ActionListener {
 
         gbc.gridx = 0;
         gbc.gridy = 3;
-        formPanel.add(new JLabel("State"), gbc);
+        formPanel.add(new JLabel("City"), gbc);
 
         gbc.gridx = 1;
         t4 = new JTextField(20);
@@ -61,27 +61,19 @@ public class NewCustomer extends JFrame implements ActionListener {
 
         gbc.gridx = 0;
         gbc.gridy = 4;
-        formPanel.add(new JLabel("City"), gbc);
+        formPanel.add(new JLabel("Email"), gbc);
 
         gbc.gridx = 1;
         t5 = new JTextField(20);
         formPanel.add(t5, gbc);
 
         gbc.gridx = 0;
-        gbc.gridy = 5;
-        formPanel.add(new JLabel("Email"), gbc);
+        gbc.gridy = 6;
+        formPanel.add(new JLabel("Mobile Number"), gbc);
 
         gbc.gridx = 1;
         t6 = new JTextField(20);
         formPanel.add(t6, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 6;
-        formPanel.add(new JLabel("Phone Number"), gbc);
-
-        gbc.gridx = 1;
-        t7 = new JTextField(20);
-        formPanel.add(t7, gbc);
 
         // Create button panel with FlowLayout
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -113,7 +105,25 @@ public class NewCustomer extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent ae) {
-        // Handle button clicks here
+        String name = t1.getText();
+        String meterNo = t2.getText();
+        String address = t3.getText();
+        String city = t4.getText();
+        String email = t5.getText();
+        String phoneNo = t6.getText();
+
+        String query = "INSERT INTO customer(customerName, meterNo, address, city, email, mobileNo) " +
+                "VALUES ('" + name + "', '" + meterNo + "', '" + address + "', '" + city + "', '" + email + "', '" + phoneNo + "')";
+
+        try {
+            connection connection = new connection();
+            connection.s.executeUpdate(query);
+            JOptionPane.showMessageDialog(null,"New Customer Added !");
+            this.setVisible(false);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
