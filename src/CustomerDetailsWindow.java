@@ -5,12 +5,24 @@ import java.awt.event.*;
 public class CustomerDetailsWindow extends JFrame implements ActionListener {
     private JButton calculateBillButton;
     private JButton cancelButton;
+    private String name;
+    private String address;
+    private String city;
+    private double outstandingAmount;
 
-    public CustomerDetailsWindow(String accNo, String customerName, String meterNo, String address, String city, String mobileNo, double outstandingAmount, int isConnectionDisconnected) {
+    private int accNo;
+
+    public CustomerDetailsWindow(String accNo, String customerName, String meterNo, String address, String city, String mobileNo, Double outstandingAmount, int isConnectionDisconnected) {
         super("Customer Details");
-        setSize(300, 350); // Increased height to accommodate the buttons
+        setSize(300, 400); // Increased height to accommodate the buttons and additional label
 
-        JPanel detailsPanel = new JPanel(new GridLayout(8, 1));
+        this.name = customerName;
+        this.address = address;
+        this.city = city;
+        this.outstandingAmount = outstandingAmount;
+        this.accNo= Integer.parseInt(accNo);
+
+        JPanel detailsPanel = new JPanel(new GridLayout(9, 1)); // Increased rows to accommodate the additional label
         detailsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel accNoLabel = new JLabel("Account No: " + accNo);
@@ -21,7 +33,14 @@ public class CustomerDetailsWindow extends JFrame implements ActionListener {
         JLabel mobileNoLabel = new JLabel("Mobile No: " + mobileNo);
         JLabel outstandingAmountLabel = new JLabel("Outstanding Amount: " + outstandingAmount);
         JLabel connectionStatusLabel = new JLabel("Connection Status: " + (isConnectionDisconnected == 1 ? "Disconnected" : "Connected"));
+        JLabel billStatusLabel = new JLabel();
+        // Check if outstandingAmount is not null
+        if (outstandingAmount != 0.0) {
+            billStatusLabel = new JLabel("Bill Overdue");
+            billStatusLabel.setForeground(Color.RED); // Set the text color to red
+        }
 
+        // Add labels to detailsPanel
         detailsPanel.add(accNoLabel);
         detailsPanel.add(meterNoLabel);
         detailsPanel.add(nameLabel);
@@ -30,6 +49,7 @@ public class CustomerDetailsWindow extends JFrame implements ActionListener {
         detailsPanel.add(mobileNoLabel);
         detailsPanel.add(outstandingAmountLabel);
         detailsPanel.add(connectionStatusLabel);
+        detailsPanel.add(billStatusLabel);
 
         // Create panel for buttons
         JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
@@ -59,11 +79,9 @@ public class CustomerDetailsWindow extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == calculateBillButton) {
-
-            // Implement the logic to calculate the bill
-
+            SwingUtilities.invokeLater(() -> new GenerateBill(name, address, city, outstandingAmount, accNo).setVisible(true));
+            dispose();
         } else if (e.getSource() == cancelButton) {
-
             dispose();
         }
     }

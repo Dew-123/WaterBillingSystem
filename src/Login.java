@@ -5,63 +5,64 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class Login extends JFrame implements ActionListener {
-    JLabel labelUsername, labelPassword, labelImage;
-    JTextField usernameField;
-    JPasswordField passwordField;
-    JButton loginButton, cancelButton;
-    JPanel inputPanel, buttonPanel;
+    private JLabel labelUsername, labelPassword, labelImage;
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton, cancelButton;
 
     public Login() {
-        super("Login Page");
+        super("Login");
 
-        // Labels
-        labelUsername = new JLabel("Username");
-        labelPassword = new JLabel("Password");
+        // Main Panel with rounded corners
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(new Color(230, 230, 230)); // Light gray background
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1, true)); // Black border
 
-        // Text Fields
+        // Username & Password Fields with labels
         usernameField = new JTextField(15);
+        usernameField.setFont(new Font("Arial", Font.PLAIN, 14));
+        usernameField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5)); // Padding around text
         passwordField = new JPasswordField(15);
+        passwordField.setFont(new Font("Arial", Font.PLAIN, 14));
+        passwordField.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Buttons
+        JPanel fieldPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        fieldPanel.add(new JLabel("Username:"));
+        fieldPanel.add(usernameField);
+        fieldPanel.add(new JLabel("Password:"));
+        fieldPanel.add(passwordField);
+        fieldPanel.setBackground(new Color(230, 230, 230)); // Light gray background for fields
+
+        // Login & Cancel Buttons with styling
         loginButton = new JButton("Login");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 14));
+        loginButton.setBackground(Color.BLUE); // Blue button
+        loginButton.setForeground(Color.WHITE); // White text
+        loginButton.setBorder(BorderFactory.createRaisedBevelBorder()); // Raised border
         cancelButton = new JButton("Cancel");
+        cancelButton.setFont(new Font("Arial", Font.BOLD, 14));
+        cancelButton.setBorder(BorderFactory.createRaisedBevelBorder());
 
-        // Add ActionListener to buttons
-        loginButton.addActionListener(this);
-        cancelButton.addActionListener(this);
-
-        // Image Label
-        labelImage = new JLabel();
-
-        // Create input panel
-        inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        inputPanel.add(labelUsername);
-        inputPanel.add(usernameField);
-        inputPanel.add(labelPassword);
-        inputPanel.add(passwordField);
-        inputPanel.setBackground(Color.WHITE);
-
-        // Create button panel
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
+        JPanel buttonPanel = new JPanel();
         buttonPanel.add(loginButton);
         buttonPanel.add(cancelButton);
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(new Color(230, 230, 230)); // Light gray background for buttons
 
-        // Set layout and add components
-        setLayout(new BorderLayout());
-        add(labelImage, BorderLayout.WEST);
-        add(inputPanel, BorderLayout.CENTER);
-        add(buttonPanel, BorderLayout.SOUTH);
+        // Add components to main panel & set layout
+        mainPanel.add(Box.createVerticalStrut(20)); // Spacing above fields
+        mainPanel.add(fieldPanel);
+        mainPanel.add(Box.createVerticalStrut(20)); // Spacing between fields and buttons
+        mainPanel.add(buttonPanel);
+        add(mainPanel, BorderLayout.CENTER);
 
-        // Set frame properties
-        setSize(640, 450);
-        setLocation(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // Action Listeners & other settings
+        loginButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+        pack();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new Login().setVisible(true);
     }
 
     @Override
@@ -80,8 +81,8 @@ public class Login extends JFrame implements ActionListener {
                     if (resultSet.next()) {
                         // Login successful
                         JOptionPane.showMessageDialog(this, "Login Successful!");
-                        new NewCustomer().setVisible(true);
-                        this.setVisible(false);
+                        new MainDashboard().setVisible(true);
+                        dispose(); // Close the login window
 
                     } else {
                         // Login failed

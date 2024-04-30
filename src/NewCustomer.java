@@ -126,14 +126,4 @@ public class NewCustomer extends JFrame implements ActionListener {
         }
     }
 
-    public static void main(String[] args) {
-        // Set look and feel to Nimbus
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        SwingUtilities.invokeLater(() -> new NewCustomer().setVisible(true));
-    }
 }
